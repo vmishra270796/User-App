@@ -1,0 +1,41 @@
+<div class="login-card-wrapper">
+  <div class="col-md-6 col-lg-4">
+    <div class="card login-card">
+      <div class="card-body p-4">
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <h3 class="card-title text-center mb-4">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Secure Login
+          </h3>
+        
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" formControlName="username" placeholder="Enter your username">
+          </div>
+          
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <input [type]="passwordFieldType" id="password" class="form-control" formControlName="password" placeholder="Enter your password">
+              <span class="input-group-text" (click)="togglePasswordVisibility()" style="cursor: pointer;">
+               <i class="bi" [ngClass]="passwordIcon"></i>
+              </span>
+            </div>
+          </div>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+          
+          <div class="d-grid gap-2  d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+            <button type="button" class="btn btn-secondary" (click)="onClear()">Clear</button>
+          </div>
+          
+          <div class="text-center mt-3">
+            <a routerLink="/register" class="text-white text-decoration-none">Don't have an account? Register</a>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>

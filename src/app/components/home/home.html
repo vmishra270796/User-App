@@ -1,0 +1,77 @@
+<div class="container mb-4">
+  <div class="row fade-in">
+    <!-- Form Column -->
+    <div class="col-md-5">
+      <h4>Submit Your Details</h4>
+      <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" formControlName="name">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Mobile No</label>
+          <input type="text" maxlength="10" class="form-control" formControlName="mobile">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Address</label>
+          <textarea class="form-control" formControlName="address"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Skills (comma-separated)</label>
+          <input type="text" class="form-control" formControlName="skills">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Hobbies (comma-separated)</label>
+          <input type="text" class="form-control" formControlName="hobbies">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Photo</label>
+          <input type="file" class="form-control" (change)="onFileSelected($event)" formControlName="photo">
+          <div *ngIf="fileError" class="text-danger mt-1"><small>{{ fileError }}</small></div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="detailsForm.invalid">Submit</button>
+      </form>
+    </div>
+
+    <!-- Details Display Column -->
+    <div class="col-md-7">
+      <h4>Submitted Details</h4>
+      <div *ngIf="submittedDetails && submittedDetails.name" class="card">
+        <div class="card-body">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <th scope="row">Name</th>
+                <td>{{ submittedDetails.name }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Mobile No</th>
+                <td>{{ submittedDetails.mobile }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Address</th>
+                <td>{{ submittedDetails.address }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Skills</th>
+                <td>{{ submittedDetails?.skills.join(', ') }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Hobbies</th>
+                <td>{{ submittedDetails?.hobbies.join(', ') }}</td>
+              </tr>
+              <tr *ngIf="submittedDetails.photo">
+                <th scope="row">Photo</th>
+                <td><a [href]="'http://localhost:5000/' + submittedDetails.photo" target="_blank">View Photo</a></td>
+                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="!submittedDetails || !submittedDetails.name" class="alert alert-info">
+        No details submitted yet. Please fill out the form.
+      </div>
+    </div>
+  </div>
+</div>

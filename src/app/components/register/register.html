@@ -1,0 +1,65 @@
+<div class="register-card-wrapper">
+  <div class="col-md-6 col-lg-4">
+    <div class="card register-card">
+      <div class="card-body p-4">
+
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+          
+          <h3 class="card-title text-center mb-4">
+            <i class="bi bi-person-plus-fill me-2"></i>Create an Account
+          </h3>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" formControlName="username" placeholder="Choose a username"
+                   [ngClass]="{ 'is-invalid': f['username'].touched && f['username'].errors }">
+            <div *ngIf="f['username'].touched && f['username'].errors" class="invalid-feedback">
+              <div *ngIf="f['username'].errors['required']">Username is required.</div>
+              <div *ngIf="f['username'].errors['minlength']">Username must be at least 3 characters.</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <input [type]="passwordFieldType" id="password" class="form-control" formControlName="password" placeholder="Create a strong password"
+                     [ngClass]="{ 'is-invalid': f['password'].touched && f['password'].errors }">
+              <span class="input-group-text" (click)="togglePasswordVisibility()" style="cursor: pointer;">
+                <i class="bi" [ngClass]="passwordIcon"></i>
+              </span>
+            </div>
+            <div *ngIf="f['password'].touched && f['password'].errors" class="invalid-feedback d-block">
+              <div *ngIf="f['password'].errors['required']">Password is required.</div>
+              <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters.</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <div class="input-group">
+                <input [type]="confirmPasswordFieldType" id="confirmPassword" class="form-control" formControlName="confirmPassword" placeholder="Confirm your password"
+                       [ngClass]="{ 'is-invalid': (f['confirmPassword'].touched || registerForm.touched) && registerForm.errors?.['passwordsMismatch'] }">
+                <span class="input-group-text" (click)="toggleConfirmPasswordVisibility()" style="cursor: pointer;">
+                    <i class="bi" [ngClass]="confirmPasswordIcon"></i>
+                </span>
+            </div>
+            <div *ngIf="(f['confirmPassword'].touched || registerForm.touched) && registerForm.errors?.['passwordsMismatch']" class="invalid-feedback d-block">
+              Passwords do not match.
+            </div>
+          </div>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+          
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+          </div>
+          
+          <div class="text-center mt-3">
+            <a routerLink="/login" class="text-white text-decoration-none">Already have an account? Login</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
