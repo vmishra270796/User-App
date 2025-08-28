@@ -16,20 +16,52 @@ export class UserListComponent implements OnInit {
   isDownloading = false;
   userToDeleteId: string | null = null;
   userToDeleteName: string | null = null;
-  constructor(private authService: AuthService,private toastr: ToastrService) {}
+  currentPage = 1;
+  totalPages = 0;
+  totalUsers = 0;
+  limit = 2;
+  constructor(private authService: AuthService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    this.authService.getAllUsers().subscribe({
-      next: (data) => {
-        this.users = data;
+    this.loadUsers();
+  }
+
+  loadUsers(): void {
+    this.authService.getAllUsers(this.currentPage, this.limit).subscribe({
+      next: (response: any) => {
+        this.users = response.users;
+        this.totalPages = response.totalPages;
+        this.totalUsers = response.totalUsers;
       },
       error: (err) => {
+        this.toastr.error('Failed to fetch users.', 'Error');
         console.error('Failed to fetch users', err);
       },
     });
   }
 
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadUsers();
+    }
+  }
 
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadUsers();
+    }
+  }
+
+  goToPage(page: number): void {
+    this.currentPage = page;
+    this.loadUsers();
+  }
+
+  getPageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
   downloadCSV(): void {
     if (this.isDownloading) {
       return;
@@ -73,7 +105,6 @@ export class UserListComponent implements OnInit {
     this.userToDeleteId = user._id;
     this.userToDeleteName = user.name;
     console.log(`User to delete: ${this.userToDeleteName} (${this.userToDeleteId})`);
-    
   }
 
   confirmDelete(): void {
