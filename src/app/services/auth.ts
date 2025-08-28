@@ -77,8 +77,13 @@ export class AuthService {
       );
   }
 
-  getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/user/all`, { withCredentials: true });
+  getAllUsers(page: number, limit: number): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/user/all?page=${page.toString()}&limit=${limit.toString()}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   getUsersAsCsv(): Observable<{ csvData: string }> {
